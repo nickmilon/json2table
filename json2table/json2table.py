@@ -215,7 +215,11 @@ class JsonConverter(object):
             return self.convert(entry)
 
         # default to stringifying entry
-        return str(entry)
+        try:                                                        # dirty patch by @nickmilon
+            return str(entry)                                       # dirty patch by @nickmilon
+        except UnicodeEncodeError as e:                             # dirty patch by @nickmilon
+            return entry.encode('ascii', 'ignore').decode('ascii')  # dirty patch by @nickmilon  
+        
 
     def _maybe_club(self, list_of_dicts):
         """
